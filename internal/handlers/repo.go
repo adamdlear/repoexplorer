@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"strconv"
+
 	"github.com/gofiber/fiber/v3"
 	"github.com/google/go-github/v85/github"
 )
@@ -21,4 +23,17 @@ func (h *RepoHandler) ListRepos(c fiber.Ctx) error {
 		return fiber.NewError(500, "could not list repos")
 	}
 	return c.JSON(repos)
+}
+
+func (h *RepoHandler) GetRepo(c fiber.Ctx) error {
+	param := c.Params("id")
+	id, err := strconv.ParseInt(param, 10, 64)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "failed to parse id param")
+	}
+	repo, _, err := h.github.Repositories.GetByID(c, id)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, "failed to get repo")
+	}
+	return c.JSON(repo)
 }

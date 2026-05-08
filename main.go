@@ -24,5 +24,6 @@ func main() {
 
 	app := fiber.New()
 	app.Get("/repos", repoHandler.ListRepos)
+	app.Get("/repos/:id", repoHandler.GetRepo)
 	app.Listen(":3000")
 }
