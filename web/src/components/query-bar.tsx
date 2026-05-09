@@ -13,11 +13,11 @@ export function QueryBar({ filters, activeFlag, resultCount, onTokenClick, onAdd
   return (
     <div className="px-5 md:px-10 pt-5 pb-4 border-b border-border shrink-0">
       {/* Breadcrumb — visible on mobile only; desktop shows it in the title bar */}
-      <div className="text-[11px] text-muted-foreground mb-2 md:hidden">~/trending</div>
+      <div className="text-[11px] text-muted-foreground mb-2">~/repoexplorer</div>
 
       <div className="text-[14px] md:text-base leading-relaxed flex flex-wrap items-baseline gap-x-1.5">
         <span className="text-primary">$</span>
-        <span>trend</span>
+        <span>repoexplorer</span>
         {filters.map((f) => (
           <QueryToken
             key={f.flag}

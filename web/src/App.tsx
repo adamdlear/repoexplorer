@@ -96,13 +96,6 @@ const MOCK_FILTERS: QueryFilter[] = [
 export default function App() {
   return (
     <div className="h-screen flex flex-col overflow-hidden bg-background text-foreground">
-      {/* Desktop-only title bar */}
-      <div className="hidden md:flex h-9 items-center gap-1.5 px-4 border-b border-border bg-card shrink-0">
-        <span className="w-2.5 h-2.5 rounded-full bg-[#3a3a3e]" />
-        <span className="w-2.5 h-2.5 rounded-full bg-[#3a3a3e]" />
-        <span className="w-2.5 h-2.5 rounded-full bg-[#3a3a3e]" />
-        <span className="text-[11px] text-muted-foreground ml-4">~/trending</span>
-      </div>
 
       <QueryBar
         filters={MOCK_FILTERS}
