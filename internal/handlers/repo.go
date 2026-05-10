@@ -18,11 +18,19 @@ func NewRepoHandler(github *github.Client) *RepoHandler {
 }
 
 func (h *RepoHandler) ListRepos(c fiber.Ctx) error {
+	page := 1
+	if p := c.Query("page"); p != "" {
+		if parsed, err := strconv.Atoi(p); err == nil && parsed > 0 {
+			page = parsed
+		}
+	}
+
 	opts := &github.SearchOptions{
 		Sort:  "stars",
 		Order: "desc",
 		ListOptions: github.ListOptions{
-			PerPage: 100,
+			Page:    page,
+			PerPage: 30,
 		},
 	}
 
