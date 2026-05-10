@@ -1,7 +1,5 @@
-FROM node:26-slim AS frontend
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+FROM ghcr.io/pnpm/pnpm:latest AS frontend
+RUN pnpm runtime set node 26 -g
 WORKDIR /app/web
 COPY web/package.json web/pnpm-lock.yaml ./
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
