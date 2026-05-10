@@ -1,7 +1,8 @@
-import type { Repo } from '@/types';
+import type { MinimalRepository } from "@/types/repo";
+
 
 type RepoRowProps = {
-  repo: Repo;
+  repo: MinimalRepository;
   rank: number;
 };
 
@@ -17,22 +18,22 @@ export function RepoRow({ repo, rank }: RepoRowProps) {
       <div className="flex justify-between items-baseline mb-2">
         <span className="text-[13px] md:text-sm">
           <span className="text-[#454549]">{String(rank).padStart(2, '0')} </span>
-          <span className="text-muted-foreground">{repo.owner}/</span>
+          <span className="text-muted-foreground">{repo.owner.name}/</span>
           <span className="text-primary font-bold">{repo.name}</span>
         </span>
         <span className="text-[12px] shrink-0 ml-4">
           <span className="text-primary mr-0.5">*</span>
-          {formatStarCount(repo.stars)}{' '}
-          <span className="text-muted-foreground">+{repo.starsGained}</span>
+          {formatStarCount(repo.stargazers_count)}{' '}
+          <span className="text-muted-foreground">+{repo.stargazers_count}</span>
         </span>
       </div>
 
       <div className="text-[12px] text-muted-foreground ml-[22px] mb-1.5 flex items-center gap-1.5">
         <span
           className="inline-block w-[7px] h-[7px] rounded-full shrink-0"
-          style={{ background: repo.languageColor }}
+          style={{ background: repo.language }}
         />
-        {repo.language.toLowerCase()}
+        {repo.language && repo.language.toLowerCase()}
       </div>
 
       <p className="text-[13px] md:text-[14px] ml-[22px] text-[#c4c4c8] leading-relaxed">
