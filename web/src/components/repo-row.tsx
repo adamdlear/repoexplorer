@@ -25,15 +25,15 @@ export function RepoRow({ repo, rank }: RepoRowProps) {
         </span>
         <span className="text-[12px] shrink-0 ml-4">
           <span className="text-primary mr-0.5">*</span>
-          {formatStarCount(repo.stargazers_count)}{' '}
-          <span className="text-muted-foreground">+{repo.stargazers_count}</span>
+          {formatStarCount(repo.stargazers_count ?? 0)}{' '}
+          <span className="text-muted-foreground">+{repo.stargazers_count ?? 0}</span>
         </span>
       </div>
 
       <div className="text-[12px] text-muted-foreground ml-[22px] mb-1.5 flex items-center gap-1.5">
         <span
           className="inline-block w-[7px] h-[7px] rounded-full shrink-0"
-          style={{ background: repo.language }}
+          style={{ background: repo.language ?? undefined }}
         />
         {repo.language && repo.language.toLowerCase()}
       </div>
