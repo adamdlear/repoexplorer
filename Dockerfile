@@ -1,8 +1,10 @@
-FROM node:26-alpine AS frontend
-WORKDIR /app/web
+FROM node:26-slim AS frontend
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
+WORKDIR /app/web
 COPY web/package.json web/pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 COPY web ./
 RUN pnpm build
 
