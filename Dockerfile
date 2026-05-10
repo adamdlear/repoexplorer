@@ -1,5 +1,5 @@
-FROM ghcr.io/pnpm/pnpm:latest AS frontend
-RUN pnpm runtime set node 26 -g
+FROM node:26-slim AS frontend
+RUN npm install -g pnpm@11
 WORKDIR /app/web
 COPY web/package.json web/pnpm-lock.yaml ./
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
