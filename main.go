@@ -8,6 +8,7 @@ import (
 
 	"github.com/adamdlear/repoexplorer/internal/handlers"
 	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/logger"
 	"github.com/gofiber/fiber/v3/middleware/static"
 	"github.com/google/go-github/v85/github"
 	"github.com/joho/godotenv"
@@ -29,6 +30,10 @@ func main() {
 	repoHandler := handlers.NewRepoHandler(gh)
 
 	app := fiber.New()
+
+	app.Use(logger.New(logger.Config{
+		Format: "[${ip}]:${port} ${status} - ${method} ${path}\n",
+	}))
 
 	api := app.Group("/api")
 	api.Get("/repos", repoHandler.ListRepos)
