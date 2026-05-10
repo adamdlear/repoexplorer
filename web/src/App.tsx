@@ -22,6 +22,7 @@ export default function App() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    isPending,
   } = useInfiniteQuery<RepoPage>({
     queryKey: ["repos"],
     queryFn: async ({ pageParam }) => {
@@ -69,9 +70,21 @@ export default function App() {
 
       {/* Results list */}
       <div className="flex-1 overflow-y-auto">
-        {repos.map((repo, i) => (
-          <RepoRow key={repo.id} repo={repo} rank={i + 1} />
-        ))}
+        {isPending
+          ? Array.from({ length: 10 }).map((_, i) => (
+              <div key={i} className="px-5 md:px-10 py-4 md:py-5 border-b border-border animate-pulse">
+                <div className="flex justify-between items-baseline mb-2">
+                  <div className="h-[13px] bg-muted rounded w-48" />
+                  <div className="h-[12px] bg-muted rounded w-16 ml-4" />
+                </div>
+                <div className="h-[12px] bg-muted rounded w-16 ml-[22px] mb-1.5" />
+                <div className="h-[13px] bg-muted rounded w-3/4 ml-[22px]" />
+              </div>
+            ))
+          : repos.map((repo, i) => (
+              <RepoRow key={repo.id} repo={repo} rank={i + 1} />
+            ))
+        }
 
         <div ref={sentinelRef} className="text-[11px] md:text-[12px] text-[#454549] py-5 text-center">
           {isFetchingNextPage ? '┄ loading more ┄' : hasNextPage ? '' : repos.length > 0 ? '┄ end ┄' : ''}
