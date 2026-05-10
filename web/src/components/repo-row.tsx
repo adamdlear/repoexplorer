@@ -18,7 +18,7 @@ export function RepoRow({ repo, rank }: RepoRowProps) {
       <div className="flex justify-between items-baseline mb-2">
         <span className="text-[13px] md:text-sm">
           <span className="text-[#454549]">{String(rank).padStart(2, '0')} </span>
-          <span className="text-muted-foreground">{repo.owner.name}/</span>
+          <span className="text-muted-foreground">{repo.owner.login}/</span>
           <span className="text-primary font-bold">{repo.name}</span>
         </span>
         <span className="text-[12px] shrink-0 ml-4">

@@ -18,10 +18,19 @@ func NewRepoHandler(github *github.Client) *RepoHandler {
 }
 
 func (h *RepoHandler) ListRepos(c fiber.Ctx) error {
-	repos, _, err := h.github.Repositories.ListAll(c.Context(), nil)
-	if err != nil {
-		return fiber.NewError(500, "could not list repos")
+	opts := &github.SearchOptions{
+		Sort:  "stars",
+		Order: "desc",
+		ListOptions: github.ListOptions{
+			PerPage: 100,
+		},
 	}
+
+	repos, _, err := h.github.Search.Repositories(c, "stars:>1", opts)
+	if err != nil {
+		return fiber.NewErrorf(fiber.StatusInternalServerError, "failed to fetch repos: %w", err)
+	}
+
 	return c.JSON(repos)
 }
 

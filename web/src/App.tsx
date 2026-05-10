@@ -2,22 +2,21 @@
 import { QueryBar } from '@/components/query-bar';
 import { RepoRow } from '@/components/repo-row';
 import type { QueryFilter } from '@/types';
-import { type MinimalRepository } from './types/repo';
 import { useQuery } from '@tanstack/react-query';
-const MOCK_FILTERS: QueryFilter[] = [
-  { flag: 'lang', value: 'rust' },
-  { flag: 'since', value: 'day' },
-  { flag: 'min', value: '1k' },
-  { flag: 'sort', value: 'stars-gained' },
-];
+import { useState } from 'react';
+import { type MinimalRepository } from './types/repo';
 
 export default function App() {
+  const [filters, _setFilters] = useState<QueryFilter[]>([])
+
   const res = useQuery<MinimalRepository[]>({
     queryKey: ["repos"],
     queryFn: async () => {
-      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/repos`)
+      const url = new URL(`${import.meta.env.VITE_SERVER_URL}/repos`)
+      const res = await fetch(url)
       const data = await res.json();
-      return data
+      console.log(data.items)
+      return data.items;
     }
   })
 
@@ -25,7 +24,7 @@ export default function App() {
     <div className="h-screen flex flex-col overflow-hidden bg-background text-foreground">
 
       <QueryBar
-        filters={MOCK_FILTERS}
+        filters={filters}
         resultCount={1284}
       />
 
