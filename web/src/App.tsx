@@ -26,7 +26,7 @@ export default function App() {
   } = useInfiniteQuery<RepoPage>({
     queryKey: ["repos"],
     queryFn: async ({ pageParam }) => {
-      const url = new URL(`${import.meta.env.VITE_SERVER_URL}/repos`)
+      const url = new URL(`/api/repos`, window.location.origin)
       url.searchParams.set('page', String(pageParam))
       const res = await fetch(url)
       return res.json();
