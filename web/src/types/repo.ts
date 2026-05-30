@@ -52,6 +52,7 @@ export type MinimalRepository = {
   svn_url?: string;
   homepage?: string | null;
   language?: string | null;
+  language_color?: string | null;
   forks_count?: number;
   stargazers_count?: number;
   watchers_count?: number;

@@ -3,9 +3,26 @@ package handlers
 import (
 	"strconv"
 
+	"github.com/adamdlear/repoexplorer/internal/colors"
 	"github.com/gofiber/fiber/v3"
 	"github.com/google/go-github/v85/github"
 )
+
+type repoWithColor struct {
+	*github.Repository
+	LanguageColor string `json:"language_color"`
+}
+
+type searchResult struct {
+	TotalCount        *int            `json:"total_count"`
+	IncompleteResults *bool           `json:"incomplete_results"`
+	Items             []repoWithColor `json:"items"`
+}
+
+func withColor(r *github.Repository) repoWithColor {
+	lang := r.GetLanguage()
+	return repoWithColor{Repository: r, LanguageColor: colors.GetColor(lang)}
+}
 
 type RepoHandler struct {
 	github *github.Client
@@ -39,7 +56,15 @@ func (h *RepoHandler) ListRepos(c fiber.Ctx) error {
 		return fiber.NewErrorf(fiber.StatusInternalServerError, "failed to fetch repos: %v", err)
 	}
 
-	return c.JSON(repos)
+	items := make([]repoWithColor, len(repos.Repositories))
+	for i, r := range repos.Repositories {
+		items[i] = withColor(r)
+	}
+	return c.JSON(searchResult{
+		TotalCount:        repos.Total,
+		IncompleteResults: repos.IncompleteResults,
+		Items:             items,
+	})
 }
 
 func (h *RepoHandler) GetRepo(c fiber.Ctx) error {
@@ -52,5 +77,5 @@ func (h *RepoHandler) GetRepo(c fiber.Ctx) error {
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, "failed to get repo")
 	}
-	return c.JSON(repo)
+	return c.JSON(withColor(repo))
 }
