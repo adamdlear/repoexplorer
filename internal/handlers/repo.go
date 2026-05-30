@@ -36,7 +36,7 @@ func (h *RepoHandler) ListRepos(c fiber.Ctx) error {
 
 	repos, _, err := h.github.Search.Repositories(c, "stars:>1", opts)
 	if err != nil {
-		return fiber.NewErrorf(fiber.StatusInternalServerError, "failed to fetch repos: %w", err)
+		return fiber.NewErrorf(fiber.StatusInternalServerError, "failed to fetch repos: %v", err)
 	}
 
 	return c.JSON(repos)
