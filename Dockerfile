@@ -15,6 +15,7 @@ COPY --from=frontend /app/web/dist ./web/dist
 RUN CGO_ENABLED=0 GOOS=linux go build -tags production -o server .
 
 FROM scratch
+COPY --from=backend /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=backend /app/server /server
 EXPOSE 3000
 CMD ["/server"]
