@@ -4,6 +4,7 @@ import (
 	"embed"
 	"io/fs"
 	"log"
+	"log/slog"
 	"os"
 
 	"github.com/adamdlear/repoexplorer/internal/handlers"
@@ -24,12 +25,16 @@ func init() {
 }
 
 func main() {
+	slog.SetDefault(slog.New(slog.NewJSONHandler(os.Stdout, nil)))
+
 	token := os.Getenv("GITHUB_TOKEN")
 	gh := github.NewClient(nil).WithAuthToken(token)
 
 	repoHandler := handlers.NewRepoHandler(gh)
 
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		ErrorHandler: handlers.ErrorHandler,
+	})
 
 	app.Use(logger.New(logger.Config{
 		Format: "[${ip}]:${port} ${status} - ${method} ${path}\n",
